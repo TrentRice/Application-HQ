@@ -1,0 +1,507 @@
+{
+  "profile": {
+    "name": "Trent Rice",
+    "summary": "Data Scientist and Analytics Professional with experience in AI, analytics, forecasting, automation, operations research, and process optimization.",
+    "education": [
+      {
+        "institution": "Boston University",
+        "degree": "Master of Science",
+        "field": "Data Science",
+        "graduation_year": 2027
+      },
+      {
+        "institution": "Dalhousie University",
+        "degree": "Bachelor of Engineering",
+        "field": "Industrial Engineering",
+        "graduation_year": 2026,
+        "gpa": "4.07/4.3"
+      }
+    ]
+  },
+
+  "skills": {
+    "programming": [
+      "Python",
+      "SQL",
+      "R",
+      "DAX"
+    ],
+
+    "data_science": [
+      "Machine Learning",
+      "Regression",
+      "Classification",
+      "Random Forests",
+      "Cross Validation",
+      "Clustering",
+      "Statistical Analysis",
+      "Forecasting",
+      "Hypothesis Testing"
+    ],
+
+    "ai": [
+      "RAG",
+      "Agent Development",
+      "Prompt Engineering",
+      "LLM Evaluation",
+      "AI Governance",
+      "Knowledge Retrieval"
+    ],
+
+    "analytics": [
+      "Power BI",
+      "Dashboard Development",
+      "KPI Design",
+      "Executive Reporting",
+      "Data Visualization"
+    ],
+
+    "automation": [
+      "Power Automate",
+      "Power Apps",
+      "SharePoint",
+      "Workflow Design"
+    ],
+
+    "industrial_engineering": [
+      "Process Mapping",
+      "Optimization",
+      "Simulation",
+      "Resource Planning",
+      "Facility Design",
+      "Operations Research"
+    ]
+  },
+
+  "experience_chunks": [
+    {
+      "id": "hr_pathfinder_architecture",
+      "company": "J.D. Irving",
+      "domain": "Artificial Intelligence",
+
+      "project": "HR Pathfinder",
+
+      "type": "technical",
+
+      "skills": [
+        "RAG",
+        "Knowledge Retrieval",
+        "SharePoint",
+        "Prompt Engineering"
+      ],
+
+      "description":
+        "Built a RAG-based AI assistant connected to HR Process Framework documentation.",
+
+      "keywords": [
+        "LLM",
+        "Generative AI",
+        "RAG",
+        "Enterprise AI"
+      ]
+    },
+
+    {
+      "id": "hr_pathfinder_governance",
+
+      "company": "J.D. Irving",
+
+      "project": "HR Pathfinder",
+
+      "type": "governance",
+
+      "skills": [
+        "AI Evaluation",
+        "Testing",
+        "Governance"
+      ],
+
+      "description":
+        "Created testing methodology, guardrails, and governance controls for enterprise rollout.",
+
+      "outcomes": [
+        "0% failure rate"
+      ]
+    },
+
+    {
+      "id": "hr_pathfinder_business_case",
+
+      "company": "J.D. Irving",
+
+      "project": "HR Pathfinder",
+
+      "type": "impact",
+
+      "outcomes": [
+        "650 annual hours saved",
+        "123 potential users",
+        "$23.8K annual benefit"
+      ]
+    },
+
+    {
+      "id": "interview_hq_agent",
+
+      "company": "J.D. Irving",
+
+      "domain": "Artificial Intelligence",
+
+      "project": "Interview HQ",
+
+      "skills": [
+        "Prompt Engineering",
+        "Power Apps",
+        "AI Agents"
+      ],
+
+      "description":
+        "Created agent that generates interview guides from job descriptions using existing templates as examples."
+    },
+
+    {
+      "id": "interview_hq_platform",
+
+      "company": "J.D. Irving",
+
+      "project": "Interview HQ",
+
+      "skills": [
+        "Power Apps",
+        "Automation",
+        "User Experience"
+      ],
+
+      "description":
+        "Built platform for guide creation, candidate scoring, and interview history management."
+    },
+
+    {
+      "id": "interview_hq_business_case",
+
+      "company": "J.D. Irving",
+
+      "project": "Interview HQ",
+
+      "outcomes": [
+        "$30K platform savings",
+        "$20K average mis-hire avoidance",
+        "$10K-$50K agency avoidance savings"
+      ]
+    },
+
+    {
+      "id": "hr_process_framework",
+
+      "company": "J.D. Irving",
+
+      "project": "HR Process Framework",
+
+      "skills": [
+        "SharePoint",
+        "Data Governance",
+        "Process Architecture"
+      ],
+
+      "description":
+        "Created centralized governed repository for HR process documents.",
+
+      "outcomes": [
+        "600 documents",
+        "36% documented tiers",
+        "46% validated documents"
+      ]
+    },
+
+    {
+      "id": "learning_dashboard",
+
+      "company": "J.D. Irving",
+
+      "project": "Learning & Development Dashboard",
+
+      "skills": [
+        "Power BI",
+        "Data Modeling",
+        "Executive Reporting"
+      ],
+
+      "outcomes": [
+        "40-60 annual hours saved",
+        "Single source of truth"
+      ]
+    },
+
+    {
+      "id": "approval_service",
+
+      "company": "J.D. Irving",
+
+      "project": "Approval Service",
+
+      "skills": [
+        "Power Apps",
+        "Power Automate",
+        "SharePoint"
+      ],
+
+      "description":
+        "Digitized approval workflows with automated routing and reporting."
+    },
+
+    {
+      "id": "student_timesheet",
+
+      "company": "J.D. Irving",
+
+      "project": "Student Time Sheet",
+
+      "skills": [
+        "Power Apps",
+        "Automation",
+        "Workflow Design"
+      ],
+
+      "outcomes": [
+        "300+ exports eliminated annually",
+        "17 hours saved annually"
+      ]
+    },
+
+    {
+      "id": "aircraft_forecasting",
+
+      "company": "IMP Aerospace",
+
+      "project": "Aircraft Recovery Forecasting",
+
+      "skills": [
+        "Forecasting",
+        "DAX",
+        "Power BI",
+        "JD Edwards"
+      ],
+
+      "description":
+        "Created forecasting measures for recovery schedules, projected dates, and handovers."
+    },
+
+    {
+      "id": "aircraft_recovery_dashboard",
+
+      "company": "IMP Aerospace",
+
+      "project": "Aircraft Project Schedule Recovery",
+
+      "skills": [
+        "Forecasting",
+        "Project Analytics",
+        "Earned Value Management"
+      ]
+    },
+
+    {
+      "id": "etc_eac_automation",
+
+      "company": "IMP Aerospace",
+
+      "project": "ETC/EAC Automation",
+
+      "skills": [
+        "SQL",
+        "Power BI",
+        "Financial Analytics"
+      ],
+
+      "description":
+        "Replaced manual Excel calculations with automated dashboards and reporting."
+    },
+
+    {
+      "id": "schedule_kpi_dashboard",
+
+      "company": "IMP Aerospace",
+
+      "project": "Plant KPI Dashboard",
+
+      "skills": [
+        "KPI Design",
+        "CPI",
+        "SPI",
+        "Power BI"
+      ]
+    },
+
+    {
+      "id": "cobot_vendor_evaluation",
+
+      "company": "Irving Tissue",
+
+      "project": "Collaborative Robot Initiative",
+
+      "skills": [
+        "Vendor Analysis",
+        "Cost Analysis",
+        "Decision Analysis"
+      ],
+
+      "description":
+        "Evaluated six robotics vendors and selected Doosan as preferred solution."
+    },
+
+    {
+      "id": "cobot_roi_analysis",
+
+      "company": "Irving Tissue",
+
+      "project": "Collaborative Robot Initiative",
+
+      "skills": [
+        "ROI Analysis",
+        "Financial Modeling",
+        "Capital Planning"
+      ],
+
+      "outcomes": [
+        "$1.4M projected savings",
+        "Sub-1-year ROI"
+      ]
+    },
+
+    {
+      "id": "cobot_executive_presentation",
+
+      "company": "Irving Tissue",
+
+      "project": "Collaborative Robot Initiative",
+
+      "skills": [
+        "Stakeholder Management",
+        "Executive Presentations"
+      ],
+
+      "description":
+        "Presented business case to VP and secured project approval."
+    },
+
+    {
+      "id": "cobot_cad_design",
+
+      "company": "Irving Tissue",
+
+      "project": "Collaborative Robot Initiative",
+
+      "skills": [
+        "CAD",
+        "Mechanical Design"
+      ],
+
+      "description":
+        "Designed custom chute systems and conveyor integrations."
+    },
+
+    {
+      "id": "hematology_analytics",
+
+      "company": "Nova Scotia Health",
+
+      "project": "Hematology Resource Analysis",
+
+      "skills": [
+        "Analytics",
+        "Excel",
+        "Data Visualization"
+      ],
+
+      "description":
+        "Analyzed patient flow, clinic utilization, and staffing requirements."
+    },
+
+    {
+      "id": "hematology_process_mapping",
+
+      "company": "Nova Scotia Health",
+
+      "project": "Hematology Resource Analysis",
+
+      "skills": [
+        "Process Mapping",
+        "Mural",
+        "Healthcare Operations"
+      ]
+    },
+
+    {
+      "id": "incident_management",
+
+      "company": "Nova Scotia Health",
+
+      "project": "Incident Management Response System",
+
+      "skills": [
+        "Power Automate",
+        "Teams",
+        "SharePoint"
+      ],
+
+      "description":
+        "Consolidated four workflows into a single automated emergency reporting platform."
+    },
+
+    {
+      "id": "palliative_care_gap_analysis",
+
+      "company": "Nova Scotia Health",
+
+      "project": "Palliative Care Gap Analysis",
+
+      "skills": [
+        "Survey Analytics",
+        "Gap Analysis",
+        "Healthcare Analytics"
+      ]
+    },
+
+    {
+      "id": "bed_ready_automation",
+
+      "company": "Nova Scotia Health",
+
+      "project": "Bed Ready Automation",
+
+      "skills": [
+        "Power Automate",
+        "Forms",
+        "SharePoint"
+      ]
+    },
+
+    {
+      "id": "tooling_optimization",
+
+      "company": "Irving Shipbuilding",
+
+      "project": "Tooling Utilization Analysis",
+
+      "skills": [
+        "SQL",
+        "Excel",
+        "Inventory Analytics"
+      ]
+    },
+
+    {
+      "id": "tooling_automation",
+
+      "company": "Irving Shipbuilding",
+
+      "project": "Tooling System Optimization",
+
+      "skills": [
+        "Automation",
+        "Tooling Management",
+        "Process Improvement"
+      ]
+    }
+  ]
+}
