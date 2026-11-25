@@ -1,0 +1,70 @@
+{
+  "header": {
+    "name": "Alex Morgan",
+    "title": "Data Analyst",
+    "location": "Chicago, IL, USA",
+    "letter_location": "Chicago, Illinois",
+    "phone": "(555) 010-0199",
+    "email": "alex.morgan@example.com",
+    "links": [
+      {
+        "label": "github.com/alexmorgan",
+        "url": "https://github.com/alexmorgan"
+      },
+      {
+        "label": "linkedin.com/in/alex-morgan",
+        "url": "https://www.linkedin.com/in/alex-morgan"
+      }
+    ]
+  },
+  "education": [
+    {
+      "degree": "Master of Science in Data Science",
+      "school": "Example University",
+      "detail": "Graduate merit scholarship",
+      "date": "May 2027"
+    },
+    {
+      "degree": "Bachelor of Science in Statistics",
+      "school": "Sample State University",
+      "detail": "3.8/4.0 GPA",
+      "date": "May 2025"
+    }
+  ],
+  "skills": [
+    {
+      "name": "Programming",
+      "max_items": 4,
+      "pool": [
+        "Python",
+        "SQL",
+        "R",
+        "DAX"
+      ]
+    },
+    {
+      "name": "Tools & Platforms",
+      "max_items": 8,
+      "pool": [
+        "pandas",
+        "scikit-learn",
+        "PostgreSQL",
+        "Power BI",
+        "Tableau",
+        "Airflow",
+        "Git/GitHub",
+        "Excel"
+      ]
+    }
+  ],
+  "projects_to_show": 2,
+  "section_settings": {
+    "northwind-retail": {
+      "max_bullets": 3
+    }
+  },
+  "bullet_bank": "",
+  "bullet_bank_fingerprint": "",
+  "experience": [],
+  "projects": []
+}

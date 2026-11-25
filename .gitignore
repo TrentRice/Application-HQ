@@ -2,3 +2,10 @@
 .venv/
 vectorstore/
 __pycache__/
+.DS_Store
+
+# Personal data: stays on your machine, never on GitHub.
+# See examples/ for sample files and the README for setup.
+data/*
+!data/.gitkeep
+output/

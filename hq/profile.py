@@ -1,7 +1,11 @@
-"""The stored profile (data/profile.json): the single source of truth.
+"""The stored profile (data/profile.json).
+
+You edit: header, education, skills, projects_to_show, section_settings.
+Generated from your Word bullet bank by hq/bullet_bank.py: experience and projects.
 
 Every experience fact is stored in the bullet formula's parts:
     [action verb] [what you did] [with what tools or methods] [impact, ideally quantified]
+plus the original bullet text it came from.
 """
 
 from __future__ import annotations
@@ -22,14 +26,17 @@ class Fact(BaseModel):
     impact: str = ""
     metrics: list[str] = Field(default_factory=list)
     keywords: list[str] = Field(default_factory=list)
+    source: str = ""  # the original bullet from the bullet bank, word for word
+    group: str = ""  # sub-heading it sat under, e.g. "HR Pathfinder (AI knowledge agent)"
+    one_liner: bool = False  # listed under "Resume one-liners" in the bullet bank
 
     def source_text(self) -> str:
         """Everything the model is allowed to draw from for this fact."""
-        return " ".join([self.action, self.what, *self.tools, self.impact, *self.metrics])
+        return " ".join([self.action, self.what, *self.tools, self.impact, *self.metrics, self.source])
 
     def embed_text(self, section: "Section") -> str:
         return (
-            f"{section.title} ({section.org}). {self.action} {self.what}. "
+            f"{section.title} ({section.org}). {self.group}. {self.action} {self.what}. "
             f"Tools: {', '.join(self.tools)}. Impact: {self.impact} {'; '.join(self.metrics)}. "
             f"Keywords: {', '.join(self.keywords)}"
         )
@@ -43,6 +50,7 @@ class Section(BaseModel):
     org: str = ""
     dates: str
     max_bullets: int = 3
+    stack: str = ""  # tools line under a project heading in the bullet bank
     facts: list[Fact]
 
 
@@ -58,6 +66,7 @@ class Header(BaseModel):
     phone: str
     email: str
     links: list[Link] = Field(default_factory=list)
+    letter_location: str = ""  # location line on the cover letter; defaults to `location`
 
 
 class Education(BaseModel):
@@ -78,6 +87,10 @@ class Profile(BaseModel):
     education: list[Education]
     skills: list[SkillGroup]
     projects_to_show: int = 2
+    # Per-section overrides keyed by section id, e.g. {"ns-health": {"max_bullets": 2}}
+    section_settings: dict[str, dict] = Field(default_factory=dict)
+    bullet_bank: str = ""  # file name in data/; empty = the only .docx there
+    bullet_bank_fingerprint: str = ""  # hash of the bullet bank at the last sync
     experience: list[Section]
     projects: list[Section] = Field(default_factory=list)
 
@@ -93,4 +106,9 @@ class Profile(BaseModel):
 
 
 def load_profile() -> Profile:
+    if not PROFILE.exists():
+        raise SystemExit(
+            "data/profile.json not found. Copy examples/profile.example.json to data/profile.json, "
+            "fill in your details, and put your bullet bank .docx in data/ (see README > Setup)."
+        )
     return Profile.model_validate_json(PROFILE.read_text(encoding="utf-8"))

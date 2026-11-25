@@ -5,9 +5,13 @@ Application HQ front end.
 
 Generate tab: paste a job description, get a one-page tailored resume and a cover letter.
 What's stored tab: see exactly which experience, metrics and skills the generator can draw on.
+
+Experience comes from your Word bullet bank in data/. It's synced automatically before each
+Generate (only new or edited bullets are processed), or on demand from the What's stored tab.
 """
 
 import json
+import re
 import subprocess
 import sys
 
@@ -17,15 +21,33 @@ from hq.paths import COVER_DOCX, JOB_DESCRIPTION, RESUME_DOCX, RESUME_REPORT, RO
 from hq.profile import load_profile
 
 STEPS = [
+    ("Syncing bullet bank", "hq.bullet_bank"),
     ("Writing tailored resume", "hq.resume"),
     ("Writing cover letter", "hq.cover_letter"),
 ]
 DOCX_MIME = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
 
 
-def run_step(module: str) -> subprocess.CompletedProcess:
+def _file_part(text: str, limit: int = 40) -> str:
+    """'Junior Analyst, Player Projections' -> 'JuniorAnalyst-PlayerProjections'."""
+    words = re.sub(r"[^A-Za-z0-9,&/\- ]+", "", text).replace("&", "and")
+    parts = [p for p in re.split(r"[,/\-]+", words) if p.strip()]
+    joined = "-".join("".join(w[:1].upper() + w[1:] for w in part.split()) for part in parts)
+    return joined[:limit].rstrip("-")
+
+
+def download_name(kind: str, report: dict | None) -> str:
+    """e.g. TrentRice_Resume_WashingtonNationals_JuniorAnalyst-PlayerProjections.docx"""
+    person = _file_part(load_profile().header.name) or "Application"
+    pieces = [person, kind]
+    if report:
+        pieces += [_file_part(report.get("company", ""), 30), _file_part(report.get("role", ""))]
+    return "_".join(p for p in pieces if p) + ".docx"
+
+
+def run_step(module: str, *args: str) -> subprocess.CompletedProcess:
     return subprocess.run(
-        [sys.executable, "-m", module],
+        [sys.executable, "-m", module, *args],
         cwd=ROOT,
         capture_output=True,
         text=True,
@@ -62,13 +84,19 @@ with generate_tab:
                     failed = True
                     break
                 st.write(f"✅ {label}")
+                if module == "hq.bullet_bank":  # show what the sync did
+                    for line in result.stdout.strip().splitlines()[-6:]:
+                        if not line.startswith("Converting"):
+                            st.caption(line)
             if not failed:
                 status.update(label="Done", state="complete", expanded=False)
 
         if not failed:
+            report = json.loads(RESUME_REPORT.read_text()) if RESUME_REPORT.exists() else None
+            names = {RESUME_DOCX: download_name("Resume", report), COVER_DOCX: download_name("CoverLetter", report)}
             st.session_state["results"] = {
-                "files": [(p.name, p.read_bytes()) for p in (RESUME_DOCX, COVER_DOCX) if p.exists()],
-                "report": json.loads(RESUME_REPORT.read_text()) if RESUME_REPORT.exists() else None,
+                "files": [(names[p], p.read_bytes()) for p in (RESUME_DOCX, COVER_DOCX) if p.exists()],
+                "report": report,
             }
 
     # Kept in session state so results survive the rerun a download click triggers.
@@ -76,7 +104,8 @@ with generate_tab:
     if results:
         cols = st.columns(len(results["files"]) or 1)
         for col, (name, data) in zip(cols, results["files"]):
-            col.download_button(f"Download {name}", data=data, file_name=name, mime=DOCX_MIME, key=name)
+            label = "Download resume" if "_Resume" in name else "Download cover letter"
+            col.download_button(label, data=data, file_name=name, mime=DOCX_MIME, key=name, help=name)
 
         report = results["report"]
         if report:
@@ -88,7 +117,7 @@ with generate_tab:
                     for t in report["trimmed_to_fit"]:
                         st.write(f"- {t}")
             if report["notes"]:
-                st.caption("Bullets that could be stronger. Add a metric in data/profile.json to fix these:")
+                st.caption("Bullets that could be stronger. Add a number to these bullets in your bullet bank:")
                 for n in report["notes"]:
                     st.warning(f"**{n['section']}**: {n['bullet']}\n\n⚠ {n['note']}")
             else:
@@ -96,6 +125,21 @@ with generate_tab:
 
 # ---- What's stored ----------------------------------------------------------------
 with stored_tab:
+    sync_col, info_col = st.columns([1, 3])
+    if sync_col.button("Sync bullet bank now"):
+        with st.spinner("Reading your bullet bank (new or edited bullets go to Claude)..."):
+            result = run_step("hq.bullet_bank")
+        if result.returncode != 0:
+            st.error(result.stderr[-2000:] or result.stdout[-2000:])
+        else:
+            for line in result.stdout.strip().splitlines():
+                if not line.startswith("Converting"):
+                    st.caption(line)
+    info_col.caption(
+        "Experience and projects come from your Word bullet bank in data/. "
+        "Edit the document, then sync here or just click Generate."
+    )
+
     try:
         profile = load_profile()
     except Exception as e:  # malformed profile.json
@@ -107,7 +151,7 @@ with stored_tab:
     st.caption(
         f"{len(profile.experience)} jobs · {len(profile.projects)} projects in the pool "
         f"({profile.projects_to_show} shown per resume) · {len(facts)} facts · "
-        f"{missing} without a metric. Source: data/profile.json"
+        f"{missing} without a metric. Source: your bullet bank, via data/profile.json"
     )
     st.markdown("Bullet formula: **[action verb] [what you did] [with what tools or methods], [impact]**")
 
@@ -125,8 +169,16 @@ with stored_tab:
     def show(section, kind):
         label = f"{section.title}" + (f" · {section.org}" if section.org else "") + f" · {section.dates}"
         with st.expander(f"{kind} {label}  ({len(section.facts)} facts, max {section.max_bullets} bullets)"):
+            if section.stack:
+                st.caption(f"Tools: {section.stack}")
+            last_group = None
             for f in section.facts:
+                if f.group != last_group and f.group:
+                    st.markdown(f"**{f.group}**")
+                last_group = f.group
                 badge = "📊 " + "; ".join(f.metrics) if f.metrics else "⚠ no metric stored"
+                if f.one_liner:
+                    badge = "⭐ one-liner · " + badge
                 st.markdown(
                     f"**{f.action}** {f.what} · _{', '.join(f.tools) or 'no tools'}_ · "
                     f"{f.impact or '(no impact)'}  \n<small>{badge}</small>",

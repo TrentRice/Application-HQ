@@ -3,8 +3,9 @@
     python -m hq.cover_letter
 
 Uses the same stored facts and vector ranking as the resume, then fills the
-{{INTRO}} / {{BODY}} / {{WHY_COMPANY}} / {{CLOSING}} placeholders in
-templates/TrentRice_CoverLetter_Template.docx.
+{{NAME}} / {{LOCATION}} / {{PHONE}} / {{EMAIL}} placeholders (from your profile header) and
+{{INTRO}} / {{BODY}} / {{WHY_COMPANY}} / {{CLOSING}} (written by Claude) in
+templates/cover_letter_template.docx.
 """
 
 from __future__ import annotations
@@ -56,8 +57,8 @@ def run() -> None:
     scores = rank(profile, job)
     pairs = sorted(profile.all_facts(), key=lambda sf: -scores.get(sf[1].id, 0))[:TOP_FACTS]
     experience = "\n".join(
-        f"- {s.title}{' at ' + s.org if s.org else ''}: {f.action} {f.what}; tools: {', '.join(f.tools)}; "
-        f"impact: {f.impact} {'; '.join(f.metrics)}"
+        f"- {s.title}{' at ' + s.org if s.org else ''}: "
+        + (f.source or f"{f.action} {f.what}; tools: {', '.join(f.tools)}; impact: {f.impact} {'; '.join(f.metrics)}")
         for s, f in pairs
     )
 
@@ -84,7 +85,12 @@ Do not include a greeting or sign-off; the template already has them. Keep the l
     COVER_JSON.write_text(json.dumps(letter.model_dump(), indent=2, ensure_ascii=False), encoding="utf-8")
 
     doc = Document(COVER_TEMPLATE)
+    h = profile.header
     replacements = {
+        "{{NAME}}": h.name,
+        "{{LOCATION}}": h.letter_location or h.location,
+        "{{PHONE}}": h.phone,
+        "{{EMAIL}}": h.email,
         "{{INTRO}}": letter.intro,
         "{{BODY}}": letter.body,
         "{{WHY_COMPANY}}": letter.why_company,

@@ -44,6 +44,8 @@ class SkillsDraft(BaseModel):
 
 
 class ResumeDraft(BaseModel):
+    company: str  # hiring company, read from the job description (used to name the files)
+    role: str  # job title, read from the job description
     skills: list[SkillsDraft]
     experience: list[SectionDraft]
     projects: list[SectionDraft]
@@ -53,22 +55,23 @@ class ResumeDraft(BaseModel):
 
 
 def _facts_block(section: Section, scores: dict[str, float]) -> str:
-    lines = [f'### id="{section.id}" | {section.title} | {section.org} | max {section.max_bullets} bullets']
+    header = f'### id="{section.id}" | {section.title} | {section.org} | max {section.max_bullets} bullets'
+    if section.stack:
+        header += f" | project tools: {section.stack}"
+    lines = [header]
     for f in sorted(section.facts, key=lambda f: -scores.get(f.id, 0)):
-        lines.append(
-            json.dumps(
-                {
-                    "fact_id": f.id,
-                    "relevance": scores.get(f.id, 0),
-                    "action": f.action,
-                    "what": f.what,
-                    "tools": f.tools,
-                    "impact": f.impact,
-                    "metrics": f.metrics,
-                },
-                ensure_ascii=False,
-            )
-        )
+        entry = {
+            "fact_id": f.id,
+            "relevance": scores.get(f.id, 0),
+            "original": f.source or f"{f.action} {f.what}, {f.impact}",
+            "tools": f.tools,
+            "metrics": f.metrics,
+        }
+        if f.group:
+            entry["group"] = f.group
+        if f.one_liner:
+            entry["one_liner"] = True
+        lines.append(json.dumps(entry, ensure_ascii=False))
     return "\n".join(lines)
 
 
@@ -95,6 +98,8 @@ SKILL POOLS:
 {skills}
 
 TASK
+0. company and role: the hiring organization's name and the job title, as written in the job
+   description (e.g. "Washington Nationals", "Junior Analyst, Player Projections"). Use "" if unknown.
 1. experience: one entry per job id above, in the same order. Choose up to that job's
    max bullets, picking the facts that best match the job description.
 2. projects: choose exactly {profile.projects_to_show} projects from the pool that best match the job.
@@ -121,6 +126,8 @@ RULES
   Cut filler words, keep 1-3 tools, and do not restate the same thing twice.
 - When choosing between facts of similar relevance, prefer ones with a quantified impact.
 - Keep proper names of products and projects (e.g. HR Pathfinder, Interview HQ) instead of generic descriptions.
+- Each fact's "original" is the candidate's own bullet. Condense it to fit; never add to it.
+- For projects, facts marked one_liner are the candidate's preferred summary bullets; favor them.
 - Mirror the job description's keywords where they truthfully describe the work (ATS).
 {feedback}"""
 
@@ -303,6 +310,8 @@ def run() -> None:
     plain = {k: v for k, v in context.items() if k != "h"}
     RESUME_JSON.write_text(json.dumps(plain, indent=2, ensure_ascii=False), encoding="utf-8")
     report = {
+        "company": draft.company.strip(),
+        "role": draft.role.strip(),
         "page_fill": round(layout.fill_ratio(height), 3),
         "lines_free": layout.lines_left(height),
         "trimmed_to_fit": trimmed,

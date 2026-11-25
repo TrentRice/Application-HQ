@@ -10,7 +10,7 @@ PROFILE = DATA / "profile.json"
 JOB_DESCRIPTION = DATA / "job_description.txt"
 
 RESUME_TEMPLATE = TEMPLATES / "resume_template.docx"
-COVER_TEMPLATE = TEMPLATES / "TrentRice_CoverLetter_Template.docx"
+COVER_TEMPLATE = TEMPLATES / "cover_letter_template.docx"
 
 RESUME_DOCX = OUTPUT / "tailored_resume.docx"
 RESUME_JSON = OUTPUT / "resume.json"
