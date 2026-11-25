@@ -1,6 +1,8 @@
 streamlit
 python-docx
+docxtpl
 python-dotenv
-google-genai
 sentence-transformers
 chromadb
+pydantic
+pillow
