@@ -121,7 +121,7 @@ source .venv/bin/activate
 streamlit run app.py
 ```
 
-Open http://localhost:8501. The page is only available while this command runs.
+Open http://localhost:8501. This isn't a public website: `localhost` means the app is running on your own computer, so the link only works on the machine that ran the command, and only while that command is running. [`.streamlit/config.toml`](.streamlit/config.toml) also restricts the app to this computer, so other devices on the same Wi-Fi can't open it either. For me, that link is my private copy of the tool running on my laptop. There's no hosted version to visit.
 
 - **Generate tab:** paste a job description and click **Generate**. Then download the resume and cover letter, and review the resume check (page fill, trimmed items, bullets that could be stronger).
 - **What's stored tab:** shows every job, project, fact, metric and skill pool the generator can use. Facts without a metric are flagged ⚠.

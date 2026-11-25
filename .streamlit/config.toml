@@ -1,0 +1,10 @@
+# Only this computer can open the app (http://localhost:8501).
+# Without this, Streamlit listens on every network interface, so anyone on the
+# same Wi-Fi could open it at http://<this-computer's-IP>:8501.
+[server]
+address = "localhost"
+port = 8501
+headless = true
+
+[browser]
+gatherUsageStats = false
