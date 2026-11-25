@@ -101,9 +101,18 @@ cp examples/bullet_bank.example.docx data/           # or put your own bullet ba
 
 No API key is needed. The app finds the `claude` command on your PATH, or the copy that ships with the Claude Code VS Code extension. If it can't find either, install Claude Code (https://claude.com/claude-code) or set `CLAUDE_BIN=/path/to/claude` in `.env`. The first run downloads the embedding model, which takes about a minute.
 
-### Privacy
+### Private files (not in this repo)
 
-Everything personal stays on your machine. `.gitignore` excludes all of `data/` (your profile, bullet bank and job descriptions) and `output/` (generated resumes and letters). The templates contain only placeholders: your name, location, phone and email are filled in from `data/profile.json` when a document is generated. Only code, templates and the fictional files in `examples/` are committed.
+This repo is the working tool I use for my own job applications. Some of the files it reads and produces contain my personal details, so they're kept on my machine and excluded from GitHub by `.gitignore`:
+
+| File | What it is |
+|---|---|
+| `data/profile.json` | My contact details, education, skill pools and the facts synced from my bullet bank |
+| `data/<bullet bank>.docx` | My full experience bullet bank: every job and project |
+| `data/job_description.txt` | The job posting I'm currently applying to |
+| `output/` | The resumes, cover letters and reports the app generates |
+
+They're missing here on purpose, not by accident. To see how they're structured, or to run the app yourself, start from the fictional versions in [`examples/`](examples/) (copied into `data/` in the setup steps above). The templates contain only placeholders: name, location, phone and email are filled in from `data/profile.json` when a document is generated, so no personal details are stored in the committed files.
 
 ## Usage
 
